@@ -1,0 +1,29 @@
+.cardHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff !important;
+    min-height: 280px;
+    max-height: 280px;
+}
+
+.cardImage {
+    width: 200px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    max-height: 280px
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    min-height: 120px;
+    max-height: 120px;
+}
+
+.cardFooter {
+    background-color: #ffffff !important;
+    display: flex;
+    flex-direction: column;
+}

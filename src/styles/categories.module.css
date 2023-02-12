@@ -1,0 +1,8 @@
+.categoriesButtons {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly
+}
+.categoriesContainer {
+    margin-top: 2rem;
+}
