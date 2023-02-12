@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from 'react';
-import {fakeStoreAPI} from "./services/fakeStore";
 import NavBar from "./components/NavBar/NavBar";
 import {Container} from "react-bootstrap";
 import SearchBar from "./components/SearchBar/SearchBar";
