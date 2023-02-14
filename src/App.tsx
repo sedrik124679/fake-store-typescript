@@ -12,6 +12,7 @@ function App() {
     const [show, setShow] = useState(false);
     const handleClose = useCallback(() => setShow(false), []);
     const handleShow = useCallback(() => setShow(true), []);
+    const [selectedCategory, setSelectedCategory] = useState<string>('All')
 
     return (
         <div>
@@ -19,8 +20,10 @@ function App() {
             <Container>
                 <SearchBar value={searchQuery} onChange={setSearchQuery}/>
                 <div>
-                    <CategoriesSection/>
-                    <ProductsSection />
+                    <CategoriesSection setSelectedCategory={setSelectedCategory}/>
+                    <ProductsSection selectedCategory={selectedCategory}
+                                     setSelectedCategory={setSelectedCategory}
+                    />
                 </div>
             </Container>
             <OffCanvas show={show} handleClose={handleClose}/>

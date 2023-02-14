@@ -14,6 +14,11 @@ export const fakeStoreAPI = createApi({
             query: (limit: number) => ({
                 url: '/products/categories'
             })
-        })
+        }),
+        getProductsByCategory: builder.query<IProduct[], string>({
+            query: (category: string) => ({
+                url: `/products/category/${category}`
+            })
+        }),
     }),
 });
