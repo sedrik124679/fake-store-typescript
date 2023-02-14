@@ -1,8 +1,7 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {fakeStoreAPI} from "../../services/fakeStore";
 import ProductCard from "./ProductCard";
-import {IProduct} from "../../models/IStore";
 
 interface ProductsSectionProps {
     selectedCategory: string,
@@ -10,9 +9,7 @@ interface ProductsSectionProps {
 }
 
 const ProductsSection: FC<ProductsSectionProps> = ({selectedCategory, setSelectedCategory}) => {
-    const {data: products, error, isLoading} = selectedCategory === 'All'
-        ? fakeStoreAPI.useGetAllProductsQuery(5)
-        : fakeStoreAPI.useGetProductsByCategoryQuery(selectedCategory);
+    const {data: products, error, isLoading} = fakeStoreAPI.useGetProductsByCategoryQuery(selectedCategory);
 
     if (isLoading) {
         return <h4 style={{textAlign: 'center'}}>Loading...</h4>

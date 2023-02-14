@@ -19,12 +19,12 @@ const CategoriesSection: FC<CategoriesSectionProps> = ({setSelectedCategory}) =>
         <div className={styles.categoriesContainer}>
             <h4>Categories:</h4>
             <div className={styles.categoriesButtons}>
-                <Button
-                    onClick={() => setSelectedCategory('All')}
-                    style={{minWidth: '70px'}}
-                    variant={'dark'}
-                >All
-                </Button>
+                {/*<Button*/}
+                {/*    onClick={() => setSelectedCategory('All')}*/}
+                {/*    style={{minWidth: '70px'}}*/}
+                {/*    variant={'dark'}*/}
+                {/*>All*/}
+                {/*</Button>*/}
                 {productsCategories && productsCategories.map(category => {
                     return <Button
                         key={`${category}-category-name`}

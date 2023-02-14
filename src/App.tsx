@@ -5,6 +5,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import OffCanvas from "./components/OffCanvas/OffCanvas";
 import CategoriesSection from "./components/CategoriesSection/CategoriesSection";
 import ProductsSection from "./components/ProductsSection/ProductsSection";
+import {fakeStoreAPI} from "./services/fakeStore";
 
 function App() {
 
@@ -12,7 +13,12 @@ function App() {
     const [show, setShow] = useState(false);
     const handleClose = useCallback(() => setShow(false), []);
     const handleShow = useCallback(() => setShow(true), []);
-    const [selectedCategory, setSelectedCategory] = useState<string>('All')
+    const [selectedCategory, setSelectedCategory] = useState<string>('electronics')
+    const {data: allProducts, error, isLoading} = fakeStoreAPI.useGetAllProductsQuery(5);
+    if (isLoading) {
+        return <h1>Loading...</h1>
+    }
+
 
     return (
         <div>
