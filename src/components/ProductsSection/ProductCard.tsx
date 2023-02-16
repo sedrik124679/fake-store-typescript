@@ -7,11 +7,18 @@ import {BsFullscreenExit} from "react-icons/bs";
 
 interface ProductCardProps {
     productItem: IProduct,
-    setSelectedCategory: (prev: string) => void
+    setSelectedCategory: (prev: string) => void,
+    setSearchQuery: (prev: string) => void
 }
 
-const ProductCard: FC<ProductCardProps> = ({productItem, setSelectedCategory}) => {
+const ProductCard: FC<ProductCardProps> = ({productItem, setSelectedCategory, setSearchQuery}) => {
     const {image, title, category, price, rating, description} = productItem;
+
+    const handleChangeCategory = (category: string): void => {
+        setSelectedCategory(category);
+        setSearchQuery('')
+    }
+
     return (
         <Card>
             <Card.Header className={styles.cardHeader}>
@@ -22,7 +29,7 @@ const ProductCard: FC<ProductCardProps> = ({productItem, setSelectedCategory}) =
             </Card.Header>
             <Card.Body className={styles.cardBody}>
                 <Card.Title>{title.length > 25 ? title.slice(0, 40).trim() + '...' : title}</Card.Title>
-                <Card.Subtitle style={{color: 'gray', cursor: 'pointer'}} onClick={() => setSelectedCategory(category)}>{category[0].toUpperCase() + category.slice(1)}</Card.Subtitle>
+                <Card.Subtitle style={{color: 'gray', cursor: 'pointer'}} onClick={() => handleChangeCategory(category)}>{category[0].toUpperCase() + category.slice(1)}</Card.Subtitle>
                 <Card.Text>{price} $</Card.Text>
             </Card.Body>
             <Card.Footer className={styles.cardFooter}>

@@ -13,7 +13,7 @@ function App() {
     const [show, setShow] = useState(false);
     const handleClose = useCallback(() => setShow(false), []);
     const handleShow = useCallback(() => setShow(true), []);
-    const [selectedCategory, setSelectedCategory] = useState<string>('')
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
 
     return (
         <div>
@@ -23,6 +23,7 @@ function App() {
                 <div>
                     <CategoriesSection setSelectedCategory={setSelectedCategory}/>
                     <ProductsSection
+                        setSearchQuery={setSearchQuery}
                         searchQuery={searchQuery}
                         selectedCategory={selectedCategory}
                         setSelectedCategory={setSelectedCategory}
