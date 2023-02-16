@@ -13,12 +13,7 @@ function App() {
     const [show, setShow] = useState(false);
     const handleClose = useCallback(() => setShow(false), []);
     const handleShow = useCallback(() => setShow(true), []);
-    const [selectedCategory, setSelectedCategory] = useState<string>('electronics')
-    const {data: allProducts, error, isLoading} = fakeStoreAPI.useGetAllProductsQuery(5);
-    if (isLoading) {
-        return <h1>Loading...</h1>
-    }
-
+    const [selectedCategory, setSelectedCategory] = useState<string>('')
 
     return (
         <div>
@@ -27,8 +22,10 @@ function App() {
                 <SearchBar value={searchQuery} onChange={setSearchQuery}/>
                 <div>
                     <CategoriesSection setSelectedCategory={setSelectedCategory}/>
-                    <ProductsSection selectedCategory={selectedCategory}
-                                     setSelectedCategory={setSelectedCategory}
+                    <ProductsSection
+                        searchQuery={searchQuery}
+                        selectedCategory={selectedCategory}
+                        setSelectedCategory={setSelectedCategory}
                     />
                 </div>
             </Container>

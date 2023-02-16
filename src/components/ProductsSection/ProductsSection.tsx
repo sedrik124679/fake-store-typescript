@@ -2,24 +2,40 @@ import React, {FC} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {fakeStoreAPI} from "../../services/fakeStore";
 import ProductCard from "./ProductCard";
+import {useProducts} from "../../hooks/hooks";
 
 interface ProductsSectionProps {
     selectedCategory: string,
-    setSelectedCategory: (prev: string) => void
+    setSelectedCategory: (prev: string) => void,
+    searchQuery: string
 }
 
-const ProductsSection: FC<ProductsSectionProps> = ({selectedCategory, setSelectedCategory}) => {
-    const {data: products, error, isLoading} = fakeStoreAPI.useGetProductsByCategoryQuery(selectedCategory);
+const ProductsSection: FC<ProductsSectionProps> = ({selectedCategory, setSelectedCategory, searchQuery}) => {
 
-    if (isLoading) {
-        return <h4 style={{textAlign: 'center'}}>Loading...</h4>
+    const {data: selectedProducts, error, isLoading} = fakeStoreAPI.useGetProductsByCategoryQuery(selectedCategory);
+    const {data: allProducts, error: allProductsError, isLoading: allProductsLoading} = fakeStoreAPI.useGetAllProductsQuery(5);
+    const searchedAllProducts = useProducts(allProducts || [], searchQuery);
+    const searchedSelectedProducts = useProducts(selectedProducts || [], searchQuery);
+
+    if (isLoading || allProductsLoading) {
+        return <h1>Loading...</h1>
     }
 
     return (
         <div style={{marginTop: '2rem'}}>
-            <h4>{selectedCategory[0].toUpperCase() + selectedCategory.slice(1)}:</h4>
+            <h4>{selectedCategory ? selectedCategory[0].toUpperCase() + selectedCategory.slice(1) : 'All'}:</h4>
             <Row xs={1} md={2} lg={4} className="g-4">
-                {products && products.map(product => <Col key={product.id}><ProductCard productItem={product} /></Col>)}
+                {
+                    selectedCategory
+                        ? searchedSelectedProducts && searchedSelectedProducts.map(product => <Col key={product.id}>
+                        <ProductCard setSelectedCategory={setSelectedCategory} productItem={product} />
+                        </Col>
+                    )
+                        : searchedAllProducts && searchedAllProducts.map(product => <Col key={product.id}>
+                        <ProductCard setSelectedCategory={setSelectedCategory} productItem={product} />
+                        </Col>
+                    )
+                }
             </Row>
         </div>
     );
