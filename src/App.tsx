@@ -1,32 +1,54 @@
 import React, {useCallback, useState} from 'react';
 import NavBar from "./components/NavBar/NavBar";
-import {Container} from "react-bootstrap";
+import {Container, Form, Modal} from "react-bootstrap";
 import SearchBar from "./components/SearchBar/SearchBar";
 import OffCanvas from "./components/OffCanvas/OffCanvas";
 import CategoriesSection from "./components/CategoriesSection/CategoriesSection";
 import ProductsSection from "./components/ProductsSection/ProductsSection";
+import AuthorizationModal from "./components/AuthorizationModal/AuthorizationModal";
 
 function App() {
 
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [show, setShow] = useState(false);
-    const handleClose = useCallback(() => setShow(false), []);
-    const handleShow = useCallback(() => setShow(true), []);
-    const [selectedCategory, setSelectedCategory] = useState<string>('All')
+    const [showCart, setShowCart] = useState(false);
+    const handleCartClose = useCallback(() => setShowCart(false), []);
+    const handleCartShow = useCallback(() => setShowCart(true), []);
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const handleLoginClose = useCallback(() => setShowLoginModal(false), []);
+    const handleLoginShow = useCallback(() => setShowLoginModal(true), []);
+
 
     return (
         <div>
-            <NavBar handleShow={handleShow}/>
+            <NavBar
+                handleShow={handleCartShow}
+                handleLoginModalShow={handleLoginShow}
+            />
             <Container>
-                <SearchBar value={searchQuery} onChange={setSearchQuery}/>
+                <SearchBar
+                    value={searchQuery}
+                    onChange={setSearchQuery}
+                />
                 <div>
-                    <CategoriesSection setSelectedCategory={setSelectedCategory}/>
-                    <ProductsSection selectedCategory={selectedCategory}
-                                     setSelectedCategory={setSelectedCategory}
+                    <CategoriesSection
+                        setSelectedCategory={setSelectedCategory}
+                    />
+                    <ProductsSection
+                        setSearchQuery={setSearchQuery}
+                        searchQuery={searchQuery}
+                        selectedCategory={selectedCategory}
+                        setSelectedCategory={setSelectedCategory}
                     />
                 </div>
             </Container>
-            <OffCanvas show={show} handleClose={handleClose}/>
+            <OffCanvas show={showCart}
+                       handleClose={handleCartClose}
+            />
+            <AuthorizationModal
+                show={showLoginModal}
+                handleClose={handleLoginClose}
+            />
         </div>
     );
 }

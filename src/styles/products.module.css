@@ -15,14 +15,6 @@
     display: flex;
     max-height: 280px;
 }
-.fullScreenIcon {
-    cursor: pointer;
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px;
-    border-radius: 3px;
-}
 
 .cardBody {
     display: flex;
@@ -35,4 +27,20 @@
     background-color: #ffffff !important;
     display: flex;
     flex-direction: column;
+}
+
+.fullScreenIcon {
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px;
+    border-radius: 3px;
+}
+
+.productsTitle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
 }

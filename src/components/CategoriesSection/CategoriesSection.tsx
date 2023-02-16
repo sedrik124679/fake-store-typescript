@@ -20,7 +20,7 @@ const CategoriesSection: FC<CategoriesSectionProps> = ({setSelectedCategory}) =>
             <h4>Categories:</h4>
             <div className={styles.categoriesButtons}>
                 <Button
-                    onClick={() => setSelectedCategory('All')}
+                    onClick={() => setSelectedCategory('')}
                     style={{minWidth: '70px'}}
                     variant={'dark'}
                 >All

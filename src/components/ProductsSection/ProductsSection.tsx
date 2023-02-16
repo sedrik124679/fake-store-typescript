@@ -1,28 +1,58 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {fakeStoreAPI} from "../../services/fakeStore";
 import ProductCard from "./ProductCard";
-import {IProduct} from "../../models/IStore";
+import {useProducts} from "../../hooks/hooks";
+import MySelect from "../MySelect/MySelect";
+import styles from "../../styles/products.module.css"
 
 interface ProductsSectionProps {
     selectedCategory: string,
-    setSelectedCategory: (prev: string) => void
+    setSelectedCategory: (prev: string) => void,
+    searchQuery: string,
+    setSearchQuery: (prev: string) => void,
 }
 
-const ProductsSection: FC<ProductsSectionProps> = ({selectedCategory, setSelectedCategory}) => {
-    const {data: products, error, isLoading} = selectedCategory === 'All'
-        ? fakeStoreAPI.useGetAllProductsQuery(5)
-        : fakeStoreAPI.useGetProductsByCategoryQuery(selectedCategory);
+const limits = [
+    {label: 'Show 5', value: '5'},
+    {label: 'Show 10', value: '10'},
+    {label: 'Show 20', value: '20'}
+]
 
-    if (isLoading) {
-        return <h4 style={{textAlign: 'center'}}>Loading...</h4>
+const ProductsSection: FC<ProductsSectionProps> = ({selectedCategory, setSelectedCategory, searchQuery, setSearchQuery}) => {
+
+    const [limit, setLimit] = useState<string>('10');
+    const {data: selectedProducts, error, isLoading} = fakeStoreAPI.useGetProductsByCategoryQuery({category: selectedCategory, limit});
+    const {data: allProducts, error: allProductsError, isLoading: allProductsLoading} = fakeStoreAPI.useGetAllProductsQuery(limit);
+    const searchedAllProducts = useProducts(allProducts || [], searchQuery);
+    const searchedSelectedProducts = useProducts(selectedProducts || [], searchQuery);
+
+    if (isLoading || allProductsLoading) {
+        return <h1>Loading...</h1>
     }
 
     return (
-        <div style={{marginTop: '2rem'}}>
-            <h4>{selectedCategory[0].toUpperCase() + selectedCategory.slice(1)}:</h4>
+        <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
+            <div className={styles.productsTitle}>
+                <h4>{selectedCategory ? selectedCategory[0].toUpperCase() + selectedCategory.slice(1) : 'All'}:</h4>
+                <MySelect styles={{width: '10%'}}
+                          onChange={setLimit}
+                          values={limits}
+                          defaultValue={limit}
+                />
+            </div>
             <Row xs={1} md={2} lg={4} className="g-4">
-                {products && products.map(product => <Col key={product.id}><ProductCard productItem={product} /></Col>)}
+                {
+                    selectedCategory
+                        ? searchedSelectedProducts && searchedSelectedProducts.map(product => <Col key={product.id}>
+                        <ProductCard setSearchQuery={setSearchQuery} setSelectedCategory={setSelectedCategory} productItem={product} />
+                        </Col>
+                    )
+                        : searchedAllProducts && searchedAllProducts.map(product => <Col key={product.id}>
+                        <ProductCard setSearchQuery={setSearchQuery} setSelectedCategory={setSelectedCategory} productItem={product} />
+                        </Col>
+                    )
+                }
             </Row>
         </div>
     );
