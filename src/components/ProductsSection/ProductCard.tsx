@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import {Button, Card} from "react-bootstrap";
 import {IProduct} from "../../models/IStore";
-import styles from "../../styles/products.module.css";
 import FancyBox from "../FancyBox/FancyBox";
 import {BsFullscreenExit} from "react-icons/bs";
+import styles from "../../styles/products.module.css";
 
 interface ProductCardProps {
     productItem: IProduct,

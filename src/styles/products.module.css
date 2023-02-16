@@ -7,23 +7,13 @@
     min-height: 280px;
     max-height: 280px;
 }
-.selectDropdown {
-    width: 10%;
-}
+
 .cardImage {
     width: 200px;
     margin: 0 auto;
     padding: 1rem;
     display: flex;
     max-height: 280px;
-}
-.fullScreenIcon {
-    cursor: pointer;
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px;
-    border-radius: 3px;
 }
 
 .cardBody {
@@ -37,4 +27,20 @@
     background-color: #ffffff !important;
     display: flex;
     flex-direction: column;
+}
+
+.fullScreenIcon {
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px;
+    border-radius: 3px;
+}
+
+.productsTitle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
 }

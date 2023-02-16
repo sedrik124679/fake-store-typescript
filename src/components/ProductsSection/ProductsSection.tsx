@@ -1,10 +1,10 @@
 import React, {FC, useState} from 'react';
-import {Col, Row, Form} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 import {fakeStoreAPI} from "../../services/fakeStore";
 import ProductCard from "./ProductCard";
 import {useProducts} from "../../hooks/hooks";
 import MySelect from "../MySelect/MySelect";
-import styles from "../../styles/products.module.css";
+import styles from "../../styles/products.module.css"
 
 interface ProductsSectionProps {
     selectedCategory: string,
@@ -20,20 +20,20 @@ const limits = [
 ]
 
 const ProductsSection: FC<ProductsSectionProps> = ({selectedCategory, setSelectedCategory, searchQuery, setSearchQuery}) => {
+
     const [limit, setLimit] = useState<string>('10');
     const {data: selectedProducts, error, isLoading} = fakeStoreAPI.useGetProductsByCategoryQuery({category: selectedCategory, limit});
     const {data: allProducts, error: allProductsError, isLoading: allProductsLoading} = fakeStoreAPI.useGetAllProductsQuery(limit);
     const searchedAllProducts = useProducts(allProducts || [], searchQuery);
     const searchedSelectedProducts = useProducts(selectedProducts || [], searchQuery);
 
-
     if (isLoading || allProductsLoading) {
         return <h1>Loading...</h1>
     }
 
     return (
-        <div style={{marginTop: '2rem'}}>
-            <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '10px'}}>
+        <div style={{marginTop: '2rem', marginBottom: '2rem'}}>
+            <div className={styles.productsTitle}>
                 <h4>{selectedCategory ? selectedCategory[0].toUpperCase() + selectedCategory.slice(1) : 'All'}:</h4>
                 <MySelect styles={{width: '10%'}}
                           onChange={setLimit}
