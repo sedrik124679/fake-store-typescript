@@ -1,43 +1,64 @@
-import React, {FC, useState} from 'react';
-import {Button, Form, Modal} from "react-bootstrap";
+import React, {FC, useCallback, useState} from 'react';
+import {Alert, Button, Form, Modal} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import MyTextField from "../MyTextField/MyTextField";
+import {fakeStoreAPI} from "../../services/fakeStore";
+import MyAlert from "../MyAlert/MyAlert";
+import {ILoginCredentials} from "../../models/IAuthorization";
 
 interface AuthorizationModalProps {
     show: boolean,
-    handleClose: () => void
+    handleClose: () => void,
+    setIsAuthorize: (prev: string) => void
 }
 
-interface LoginCredentials {
-    email: string,
-    password: string
-}
-
-const AuthorizationModal: FC<AuthorizationModalProps> = ({show, handleClose}) => {
-
-    const [errorText, setErrorText] = useState<string | null>(null);
-    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm<LoginCredentials>();
+const AuthorizationModal: FC<AuthorizationModalProps> = ({show, handleClose, setIsAuthorize}) => {
+    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm<ILoginCredentials>();
     const [alreadyHaveAccount, setAlreadyHaveAccount] = useState<boolean>(true);
+    const [userLogin, response] = fakeStoreAPI.useAuthLoginMutation();
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [showAlert, setShowAlert] = useState<boolean>(false);
 
-    const onSubmit = async () => {
+    const handleAlertClose = useCallback(() => {
+        setShowAlert(false);
+        setErrorMessage(null);
+    }, []);
 
+
+    const onSubmit = async (data: ILoginCredentials) => {
+        const response = await userLogin(data);
+        if ("data" in response) {
+            localStorage.setItem('token', response.data.token);
+            setIsAuthorize(response.data.token);
+            handleClose();
+        }
+        if ("error" in response) {
+            if ("data" in response.error) {
+                setErrorMessage(response.error.data as string);
+                setShowAlert(true);
+            }
+        }
     }
 
     return (
         <Modal show={show} onHide={handleClose}>
+            {showAlert && <MyAlert variant={'danger'}
+                                   message={errorMessage}
+                                   onClose={handleAlertClose}
+            />}
             <Modal.Header closeButton>
                 <Modal.Title>{alreadyHaveAccount ? 'Log In' : 'Sign Up'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <MyTextField
-                        name={'email'}
-                        placeholder={'email@gmail.com'}
+                        name={'username'}
+                        placeholder={'Username...'}
                         register={register}
-                        label={'Email'}
-                        type={'email'}
+                        label={'Username'}
+                        type={'text'}
                         registerOptions={{required: 'Required'}}
-                        error={errors.email}
+                        error={errors.username}
                     />
                     <MyTextField
                         name={'password'}
