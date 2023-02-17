@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery, FetchBaseQueryError} from '@reduxjs/toolkit/query/react'
-import {IProduct} from "../models/IStore";
+import {ICart, IProduct} from "../models/IStore";
 import {SerializedError} from "@reduxjs/toolkit";
 import {ILoginCredentials} from "../models/IAuthorization";
 
@@ -22,10 +22,20 @@ export const fakeStoreAPI = createApi({
                 url: `/products?limit=${limit}`,
             }),
         }),
+        getSingleProduct: builder.query<IProduct, number>({
+           query: (productId: number) => ({
+               url: `/products/${productId}`
+           })
+        }),
         getAllCategories: builder.query<string[], number>({
             query: (limit: number) => ({
                 url: '/products/categories'
             })
+        }),
+        getUserCarts: builder.query<ICart[], string | null>({
+           query: (userId: string) => ({
+               url: `/carts/user/${userId}`
+           })
         }),
         getProductsByCategory: builder.query<IProduct[], IGetProductsByCategoryQuery>({
             query: (params: IGetProductsByCategoryQuery) => ({

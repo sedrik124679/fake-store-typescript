@@ -1,0 +1,27 @@
+.offcanvas {
+    display: flex;
+}
+
+.accordion {
+    width: 100%;
+    align-self: end;
+}
+
+.cardBody {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card {
+    margin-top: 1rem;
+}
+
+.cardImage {
+    width: 50px;
+    height: 50px;
+}
+
+.cardSubtitle {
+    margin-bottom: 0px;
+}
