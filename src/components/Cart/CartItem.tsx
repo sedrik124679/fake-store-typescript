@@ -20,7 +20,6 @@ const CartItem: FC<CartItemProps> = ({cartItem, index}) => {
             <Accordion.Body>
                 {products.map(product => {
                     return <CartCard
-                        totalPrice={totalPrice}
                         setTotalPrice={setTotalPrice}
                         key={`${date}-${index}-${product.productId}`}
                         productId={product.productId}

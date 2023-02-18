@@ -1,4 +1,4 @@
-import React, {Dispatch, FC, SetStateAction, useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {Card, Image} from "react-bootstrap";
 import {fakeStoreAPI} from "../../services/fakeStore";
 import styles from "../../styles/cart.module.css";
@@ -6,19 +6,17 @@ import styles from "../../styles/cart.module.css";
 interface CartCardProps {
     productId: number,
     quantity: number,
-    setTotalPrice: (prev: number) => void,
-    totalPrice: number
+    setTotalPrice: (prev: (prev: number) => number) => void,
 }
 
-const CartCard: FC<CartCardProps> = ({productId, quantity, setTotalPrice, totalPrice}) => {
+const CartCard: FC<CartCardProps> = ({productId, quantity, setTotalPrice}) => {
 
     const {data: singleProduct, error, isLoading} = fakeStoreAPI.useGetSingleProductQuery(productId);
 
     useEffect(() => {
         if (singleProduct) {
             const total = quantity * singleProduct.price;
-            // @ts-ignore
-            setTotalPrice(prev => prev + total);
+            setTotalPrice((prev: number) => prev + total);
         }
     }, [singleProduct])
 
