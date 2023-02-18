@@ -29,7 +29,7 @@ const CartCard: FC<CartCardProps> = ({productId, quantity, setTotalPrice}) => {
             {singleProduct && <>
                 <Card.Body className={styles.cardBody}>
                     <Image className={styles.cardImage} src={singleProduct.image} alt={'single product image'}/>
-                    <Card.Subtitle className={styles.Subtitle}>{singleProduct.title.length > 20 ? singleProduct.title.slice(0, 20) + '...' : singleProduct.title}</Card.Subtitle>
+                    <Card.Subtitle title={singleProduct.title} className={styles.Subtitle}>{singleProduct.title.length > 20 ? singleProduct.title.slice(0, 20) + '...' : singleProduct.title}</Card.Subtitle>
                     <Card.Subtitle className={styles.Subtitle}>x{quantity}</Card.Subtitle>
                 </Card.Body>
                 <Card.Footer>Total: {quantity * singleProduct.price}$</Card.Footer>

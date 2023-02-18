@@ -1,15 +1,16 @@
 import React, {FC, useState} from 'react';
-import {Button, Container, Navbar} from "react-bootstrap";
+import {Badge, Button, Container, Navbar} from "react-bootstrap";
 import {BsFillCartCheckFill} from "react-icons/bs";
 
 interface NavBarProps {
     handleShow: () => void,
     handleLoginModalShow: () => void,
     isAuthorize: string | null,
-    setIsAuthorize: (prev: string) => void
+    setIsAuthorize: (prev: string) => void,
+    productsCount: number
 }
 
-const NavBar: FC<NavBarProps> = ({ handleShow, handleLoginModalShow, isAuthorize, setIsAuthorize }) => {
+const NavBar: FC<NavBarProps> = ({ handleShow, handleLoginModalShow, isAuthorize, setIsAuthorize, productsCount }) => {
 
     const logout = () => {
         localStorage.clear();
@@ -31,7 +32,16 @@ const NavBar: FC<NavBarProps> = ({ handleShow, handleLoginModalShow, isAuthorize
                             Login
                         </Button>
                     }
-                    <BsFillCartCheckFill onClick={handleShow} style={{cursor: 'pointer'}} color={'white'} size={24} />
+                    <span onClick={handleShow} style={{cursor: 'pointer'}}>
+                        <BsFillCartCheckFill color={'white'} size={24}></BsFillCartCheckFill>
+                        {productsCount && <Badge style={{
+                            width: '16px',
+                            height: '16px',
+                            display: 'inline-flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }} bg="secondary">{productsCount}</Badge>}
+                    </span>
                 </div>
             </Container>
         </Navbar>

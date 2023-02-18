@@ -1,16 +1,19 @@
-import React, {FC, useState} from 'react';
+import React, {Dispatch, FC, SetStateAction, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
 import {fakeStoreAPI} from "../../services/fakeStore";
 import ProductCard from "./ProductCard";
 import {useProducts} from "../../hooks/hooks";
 import MySelect from "../MySelect/MySelect";
 import styles from "../../styles/products.module.css"
+import {ICart} from "../../models/IStore";
 
 interface ProductsSectionProps {
     selectedCategory: string,
     setSelectedCategory: (prev: string) => void,
     searchQuery: string,
     setSearchQuery: (prev: string) => void,
+    setUserCart: Dispatch<SetStateAction<ICart>>
+    userCart: ICart
 }
 
 const limits = [
@@ -19,7 +22,7 @@ const limits = [
     {label: 'Show 20', value: '20'}
 ]
 
-const ProductsSection: FC<ProductsSectionProps> = ({selectedCategory, setSelectedCategory, searchQuery, setSearchQuery}) => {
+const ProductsSection: FC<ProductsSectionProps> = ({setUserCart, userCart, selectedCategory, setSelectedCategory, searchQuery, setSearchQuery}) => {
 
     const [limit, setLimit] = useState<string>('10');
     const {data: selectedProducts, error, isLoading} = fakeStoreAPI.useGetProductsByCategoryQuery({category: selectedCategory, limit});
@@ -45,11 +48,11 @@ const ProductsSection: FC<ProductsSectionProps> = ({selectedCategory, setSelecte
                 {
                     selectedCategory
                         ? searchedSelectedProducts && searchedSelectedProducts.map(product => <Col key={product.id}>
-                        <ProductCard setSearchQuery={setSearchQuery} setSelectedCategory={setSelectedCategory} productItem={product} />
+                        <ProductCard setUserCart={setUserCart} userCart={userCart} setSearchQuery={setSearchQuery} setSelectedCategory={setSelectedCategory} productItem={product} />
                         </Col>
                     )
                         : searchedAllProducts && searchedAllProducts.map(product => <Col key={product.id}>
-                        <ProductCard setSearchQuery={setSearchQuery} setSelectedCategory={setSelectedCategory} productItem={product} />
+                        <ProductCard setUserCart={setUserCart} userCart={userCart} setSearchQuery={setSearchQuery} setSelectedCategory={setSelectedCategory} productItem={product} />
                         </Col>
                     )
                 }
