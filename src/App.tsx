@@ -1,14 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import NavBar from "./components/NavBar/NavBar";
-import {Container, Form, Modal} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import SearchBar from "./components/SearchBar/SearchBar";
-import OffCanvas from "./components/OffCanvas/OffCanvas";
 import CategoriesSection from "./components/CategoriesSection/CategoriesSection";
 import ProductsSection from "./components/ProductsSection/ProductsSection";
 import AuthorizationModal from "./components/AuthorizationModal/AuthorizationModal";
+import Cart from "./components/Cart/Cart";
 
 function App() {
-
+    const [isAuthorize, setIsAuthorize] = useState(localStorage.getItem('token'));
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [showCart, setShowCart] = useState(false);
     const handleCartClose = useCallback(() => setShowCart(false), []);
@@ -18,10 +18,11 @@ function App() {
     const handleLoginClose = useCallback(() => setShowLoginModal(false), []);
     const handleLoginShow = useCallback(() => setShowLoginModal(true), []);
 
-
     return (
         <div>
             <NavBar
+                isAuthorize={isAuthorize}
+                setIsAuthorize={setIsAuthorize}
                 handleShow={handleCartShow}
                 handleLoginModalShow={handleLoginShow}
             />
@@ -42,10 +43,12 @@ function App() {
                     />
                 </div>
             </Container>
-            <OffCanvas show={showCart}
+            <Cart show={showCart}
                        handleClose={handleCartClose}
+                       isAuthorize={isAuthorize}
             />
             <AuthorizationModal
+                setIsAuthorize={setIsAuthorize}
                 show={showLoginModal}
                 handleClose={handleLoginClose}
             />
