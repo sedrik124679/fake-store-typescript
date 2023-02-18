@@ -12,7 +12,6 @@ interface CartItemProps {
 const CartItem: FC<CartItemProps> = ({cartItem, index}) => {
 
     const {id, userId, products, date} = cartItem;
-
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
     return (
@@ -21,6 +20,8 @@ const CartItem: FC<CartItemProps> = ({cartItem, index}) => {
             <Accordion.Body>
                 {products.map(product => {
                     return <CartCard
+                        totalPrice={totalPrice}
+                        setTotalPrice={setTotalPrice}
                         key={`${date}-${index}-${product.productId}`}
                         productId={product.productId}
                         quantity={product.quantity}
