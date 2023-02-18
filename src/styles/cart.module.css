@@ -1,10 +1,12 @@
 .offcanvas {
     display: flex;
+    flex-direction: column;
 }
 
 .accordion {
     width: 100%;
     align-self: end;
+    margin-top: auto;
 }
 
 .cardBody {
