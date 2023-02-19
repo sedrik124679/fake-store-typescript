@@ -1,19 +1,19 @@
-import React, {FC} from 'react';
+import React, {Dispatch, FC, SetStateAction} from 'react';
 import {Accordion, Offcanvas} from "react-bootstrap";
 import {fakeStoreAPI} from "../../services/fakeStore";
 import CartItem from "./CartItem";
 import styles from "../../styles/cart.module.css";
 import {ICart} from "../../models/IStore";
-import {TbH5} from "react-icons/all";
 
 interface OffCanvasProps {
     show: boolean,
     handleClose: () => void,
     isAuthorize: string | null,
-    userCart: ICart
+    userCart: ICart,
+    setUserCart: Dispatch<SetStateAction<ICart>>
 }
 
-const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart}) => {
+const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart, setUserCart}) => {
 
     const {data: userCarts, error, isLoading} = fakeStoreAPI.useGetUserCartsQuery(localStorage.getItem('userId'));
 
@@ -40,6 +40,8 @@ const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart}) =>
                         ? <>
                             <h5>Active carts</h5>
                             <CartItem
+                                setUserCart={setUserCart}
+                                userCart={userCart}
                                 cartItem={userCart}
                                 index={0}
                             />

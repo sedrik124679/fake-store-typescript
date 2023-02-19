@@ -27,3 +27,14 @@
 .cardSubtitle {
     margin-bottom: 0px;
 }
+
+.cardFooter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cardQuantityContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

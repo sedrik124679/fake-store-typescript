@@ -54,6 +54,7 @@ function App() {
                 </div>
             </Container>
             <Cart
+                setUserCart={setUserCart}
                 userCart={userCart}
                 show={showCart}
                 handleClose={handleCartClose}
