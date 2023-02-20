@@ -38,3 +38,13 @@
     justify-content: center;
     align-items: center;
 }
+
+.accordionBody {
+    display: flex;
+    flex-direction: column;
+}
+
+.accordionButton {
+    margin-top: 1rem;
+    align-self: end;
+}

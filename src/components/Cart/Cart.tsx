@@ -1,4 +1,4 @@
-import React, {Dispatch, FC, SetStateAction} from 'react';
+import React, {Dispatch, FC, SetStateAction, useEffect, useState} from 'react';
 import {Accordion, Offcanvas} from "react-bootstrap";
 import {fakeStoreAPI} from "../../services/fakeStore";
 import CartItem from "./CartItem";
@@ -16,6 +16,11 @@ interface OffCanvasProps {
 const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart, setUserCart}) => {
 
     const {data: userCarts, error, isLoading} = fakeStoreAPI.useGetUserCartsQuery(localStorage.getItem('userId'));
+    const [userCartsState, setUserCartsState] = useState<ICart[]>([])
+
+    useEffect(() => {
+        userCarts && setUserCartsState([...userCarts]);
+    }, [userCarts])
 
     if (isLoading) {
         return null
@@ -29,17 +34,12 @@ const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart, set
             <Offcanvas.Body className={styles.offcanvas}>
 
                 <Accordion>
-                    {/*{userCart && userCart.map((cartItem, index) => {*/}
-                    {/*    return <CartItem*/}
-                    {/*        cartItem={cartItem}*/}
-                    {/*        index={index}*/}
-                    {/*        key={`cart-${index}`}*/}
-                    {/*    />*/}
-                    {/*})}*/}
                     {userCart.products.length
                         ? <>
                             <h5>Active carts</h5>
                             <CartItem
+                                userCarts={userCartsState}
+                                setUserCarts={setUserCartsState}
                                 setUserCart={setUserCart}
                                 userCart={userCart}
                                 cartItem={userCart}
@@ -52,8 +52,10 @@ const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart, set
 
                 {localStorage.getItem('token') && <Accordion className={styles.accordion}>
                     <h5>Previous carts</h5>
-                    {userCarts && userCarts.map((cartItem, index) => {
+                    {userCarts && userCartsState.map((cartItem, index) => {
                         return <CartItem
+                            userCarts={userCartsState}
+                            setUserCarts={setUserCartsState}
                             cartItem={cartItem}
                             index={index}
                             key={`cart-${index}`}
