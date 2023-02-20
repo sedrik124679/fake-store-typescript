@@ -42,6 +42,13 @@ export const fakeStoreAPI = createApi({
                 url: `/products/category/${params.category}?limit=${params.limit}`
             })
         }),
+        addProductsToCart: builder.mutation<ICart, ICart>({
+            query: (userCart) => ({
+                url: `/carts`,
+                method: 'POST',
+                body: userCart,
+            })
+        }),
         authLogin: builder.mutation<IAuthorization, ILoginCredentials>({
             query: (params) => ({
                 url: `/auth/login`,
