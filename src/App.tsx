@@ -1,12 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import NavBar from "./components/NavBar/NavBar";
-import {Container} from "react-bootstrap";
+import {Badge, Container} from "react-bootstrap";
 import SearchBar from "./components/SearchBar/SearchBar";
 import CategoriesSection from "./components/CategoriesSection/CategoriesSection";
 import ProductsSection from "./components/ProductsSection/ProductsSection";
 import AuthorizationModal from "./components/AuthorizationModal/AuthorizationModal";
 import Cart from "./components/Cart/Cart";
 import {ICart} from "./models/IStore";
+import {BsFillCartCheckFill} from "react-icons/bs";
+import styles from "./styles/app.module.css";
 
 function App() {
     const [isAuthorize, setIsAuthorize] = useState(localStorage.getItem('token'));
@@ -54,6 +56,7 @@ function App() {
                 </div>
             </Container>
             <Cart
+                handleLoginShow={handleLoginShow}
                 setUserCart={setUserCart}
                 userCart={userCart}
                 show={showCart}
@@ -65,6 +68,22 @@ function App() {
                 show={showLoginModal}
                 handleClose={handleLoginClose}
             />
+            <div onClick={handleCartShow} style={{position: 'relative', cursor: 'pointer'}}>
+                <span className={styles.cartIcon} style={{background: userCart.products.length ? '#ee32b4' : '#747a7e',}}>
+                        <BsFillCartCheckFill color={'white'} size={24}></BsFillCartCheckFill>
+                    {userCart.products.length ? <Badge style={{
+                        position: 'absolute',
+                        width: '16px',
+                        height: '16px',
+                        display: 'inline-flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        right: '5px',
+                        top: '5px',
+                        background: 'black'
+                    }} bg={'secondary'}>{userCart.products.length}</Badge> : null}
+                    </span>
+            </div>
         </div>
     );
 }

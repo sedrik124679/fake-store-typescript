@@ -12,31 +12,48 @@ interface CartItemProps {
     userCart?: ICart,
     setUserCart?: Dispatch<SetStateAction<ICart>>,
     userCarts: ICart[],
-    setUserCarts: Dispatch<SetStateAction<ICart[]>>
+    setUserCarts: Dispatch<SetStateAction<ICart[]>>,
+    handleLoginShow: () => void
 }
 
-const CartItem: FC<CartItemProps> = ({setUserCarts, cartItem, index, userCart, setUserCart, userCarts}) => {
-
+const CartItem: FC<CartItemProps> = ({
+                                         handleLoginShow,
+                                         cartItem,
+                                         index,
+                                         userCart,
+                                         setUserCart,
+                                         userCarts,
+                                         setUserCarts
+                                     }) => {
     const {id, userId, products, date} = cartItem;
     const [totalPrice, setTotalPrice] = useState<number>(0);
-    const [modalShow, setModalShow] = useState(false);
+
     const [addProducts, response] = fakeStoreAPI.useAddProductsToCartMutation();
+    const [showSubmitOrderModal, setShowSubmitOrderModal] = useState<boolean>(false);
 
     const handleBuy = async (userCart: ICart | undefined) => {
-        if (userCart) {
+        if (userCart && localStorage.getItem('token')) {
             await addProducts(userCart);
+            return
         }
+        setShowSubmitOrderModal(false);
+        handleLoginShow();
     }
 
     useEffect(() => {
         if (response) {
-            if (response.data) {
-                setUserCarts([...userCarts, response.data].reverse());
+            if (response.data && userCart) {
+                setUserCarts && setUserCarts([response.data, ...userCarts]);
+                setUserCart && setUserCart({
+                    id: 3,
+                    userId: 1,
+                    date: new Date(Date.now()).toISOString().split('T')[0],
+                    products: []
+                });
             }
         }
-    }, [response])
+    }, [response]);
 
-    console.log(userCarts)
 
     return (
         <>
@@ -54,34 +71,37 @@ const CartItem: FC<CartItemProps> = ({setUserCarts, cartItem, index, userCart, s
                         />
                     })}
                     {userCart && <Button variant={'dark'}
-                                         onClick={() => setModalShow(true)}
+                                         onClick={() => setShowSubmitOrderModal(true)}
                                          className={styles.accordionButton}
                     >Make an order</Button>
                     }
                 </Accordion.Body>
             </Accordion.Item>
             <Modal
-                onHide={() => setModalShow(false)}
-                show={modalShow}
-                size="lg"
+                onHide={() => setShowSubmitOrderModal(false)}
+                show={showSubmitOrderModal}
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Modal heading
+                        Your cart
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h4>Centered Modal</h4>
-                    <p>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                        consectetur ac, vestibulum at eros.
-                    </p>
+                    {products.map(product => {
+                        return <CartCard
+                            setUserCart={setUserCart || null}
+                            userCart={userCart || null}
+                            setTotalPrice={setTotalPrice}
+                            key={`${date}-${index}-${product.productId}`}
+                            productId={product.productId}
+                            quantity={product.quantity}
+                        />
+                    })}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={() => handleBuy(userCart)}>Close</Button>
+                    <Button onClick={() => handleBuy(userCart)}>Submit an order</Button>
                 </Modal.Footer>
             </Modal>
         </>

@@ -1,6 +1,7 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {Badge, Button, Container, Navbar} from "react-bootstrap";
 import {BsFillCartCheckFill} from "react-icons/bs";
+import styles from "../../styles/navbar.module.css";
 
 interface NavBarProps {
     handleShow: () => void,
@@ -10,7 +11,7 @@ interface NavBarProps {
     productsCount: number
 }
 
-const NavBar: FC<NavBarProps> = ({ handleShow, handleLoginModalShow, isAuthorize, setIsAuthorize, productsCount }) => {
+const NavBar: FC<NavBarProps> = ({handleShow, handleLoginModalShow, isAuthorize, setIsAuthorize, productsCount}) => {
 
     const logout = () => {
         localStorage.clear();
@@ -32,16 +33,21 @@ const NavBar: FC<NavBarProps> = ({ handleShow, handleLoginModalShow, isAuthorize
                             Login
                         </Button>
                     }
-                    <span onClick={handleShow} style={{cursor: 'pointer'}}>
+                    <div onClick={handleShow} className={styles.cartIconContainer}>
+                <span>
                         <BsFillCartCheckFill color={'white'} size={24}></BsFillCartCheckFill>
-                        {productsCount && <Badge style={{
-                            width: '16px',
-                            height: '16px',
-                            display: 'inline-flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }} bg="secondary">{productsCount}</Badge>}
+                    {productsCount ? <Badge style={{
+                        position: 'absolute',
+                        width: '12px',
+                        height: '16px',
+                        display: 'inline-flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        right: '-2px',
+                        top: '0'
+                    }} className={styles.badge} bg="secondary">{productsCount}</Badge> : null}
                     </span>
+                    </div>
                 </div>
             </Container>
         </Navbar>
