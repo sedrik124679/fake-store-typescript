@@ -10,13 +10,14 @@ interface OffCanvasProps {
     handleClose: () => void,
     isAuthorize: string | null,
     userCart: ICart,
-    setUserCart: Dispatch<SetStateAction<ICart>>
+    setUserCart: Dispatch<SetStateAction<ICart>>,
+    handleLoginShow: () => void
 }
 
-const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart, setUserCart}) => {
+const Cart: FC<OffCanvasProps> = ({handleLoginShow, show, handleClose, isAuthorize, userCart, setUserCart}) => {
 
     const {data: userCarts, error, isLoading} = fakeStoreAPI.useGetUserCartsQuery(localStorage.getItem('userId'));
-    const [userCartsState, setUserCartsState] = useState<ICart[]>([])
+    const [userCartsState, setUserCartsState] = useState<ICart[]>([]);
 
     useEffect(() => {
         userCarts && setUserCartsState([...userCarts]);
@@ -38,6 +39,7 @@ const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart, set
                         ? <>
                             <h5>Active carts</h5>
                             <CartItem
+                                handleLoginShow={handleLoginShow}
                                 userCarts={userCartsState}
                                 setUserCarts={setUserCartsState}
                                 setUserCart={setUserCart}
@@ -54,6 +56,7 @@ const Cart: FC<OffCanvasProps> = ({show, handleClose, isAuthorize, userCart, set
                     <h5>Previous carts</h5>
                     {userCarts && userCartsState.map((cartItem, index) => {
                         return <CartItem
+                            handleLoginShow={handleLoginShow}
                             userCarts={userCartsState}
                             setUserCarts={setUserCartsState}
                             cartItem={cartItem}
