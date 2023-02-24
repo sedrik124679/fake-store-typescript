@@ -32,7 +32,8 @@ const CartCard: FC<CartCardProps> = ({productId, quantity, setTotalPrice, userCa
 
     const handleDeleteProductFromCart = (id: number) => {
         if (userCart && setUserCart && singleProduct) {
-            setUserCart({...userCart, products: [...userCart.products].filter(product => product.productId !== id)});
+            setUserCart({...userCart, products: [...userCart.products]
+                    .filter(product => product.productId !== id)});
             setTotalPrice(prev => prev - quantity * singleProduct.price)
         }
     }

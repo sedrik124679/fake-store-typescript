@@ -33,7 +33,6 @@ const Cart: FC<OffCanvasProps> = ({handleLoginShow, show, handleClose, isAuthori
                 <Offcanvas.Title>Cart</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body className={styles.offcanvas}>
-
                 <Accordion>
                     {userCart.products.length
                         ? <>

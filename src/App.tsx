@@ -9,6 +9,7 @@ import Cart from "./components/Cart/Cart";
 import {ICart} from "./models/IStore";
 import {BsFillCartCheckFill} from "react-icons/bs";
 import styles from "./styles/app.module.css";
+import Footer from "./components/Footer/Footer";
 
 function App() {
     const [isAuthorize, setIsAuthorize] = useState(localStorage.getItem('token'));
@@ -84,6 +85,7 @@ function App() {
                     }} bg={'secondary'}>{userCart.products.length}</Badge> : null}
                     </span>
             </div>
+            <Footer/>
         </div>
     );
 }
