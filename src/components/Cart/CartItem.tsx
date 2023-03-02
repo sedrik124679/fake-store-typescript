@@ -44,6 +44,7 @@ const CartItem: FC<CartItemProps> = ({
         if (response) {
             if (response.data && userCart) {
                 setUserCarts && setUserCarts([response.data, ...userCarts]);
+                setTotalPrice(prev => prev - totalPrice);
                 setUserCart && setUserCart({
                     id: 3,
                     userId: 1,
@@ -53,7 +54,6 @@ const CartItem: FC<CartItemProps> = ({
             }
         }
     }, [response]);
-
 
     return (
         <>
@@ -89,11 +89,12 @@ const CartItem: FC<CartItemProps> = ({
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <Modal.Title>To be paid: {Math.trunc(totalPrice)}$</Modal.Title>
                     {products.map(product => {
                         return <CartCard
-                            setUserCart={setUserCart || null}
-                            userCart={userCart || null}
-                            setTotalPrice={setTotalPrice}
+                            setUserCart={null}
+                            userCart={null}
+                            setTotalPrice={() => {}}
                             key={`${date}-${index}-${product.productId}`}
                             productId={product.productId}
                             quantity={product.quantity}
