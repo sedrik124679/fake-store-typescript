@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {Badge, Button, Container, Navbar} from "react-bootstrap";
 import {BsFillCartCheckFill} from "react-icons/bs";
 import styles from "../../styles/navbar.module.css";
+import {Link} from "react-router-dom";
 
 interface NavBarProps {
     handleShow: () => void,
@@ -21,7 +22,7 @@ const NavBar: FC<NavBarProps> = ({handleShow, handleLoginModalShow, isAuthorize,
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand as={Link} to={'/'}>
                     Eugene Krabs
                 </Navbar.Brand>
                 <div>
